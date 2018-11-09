@@ -4,6 +4,7 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace Banking.AU.tests.ABA
@@ -17,7 +18,7 @@ namespace Banking.AU.tests.ABA
 			// Arrange
             var io = new AbaFileIO();
             var file = new AbaFile();
-            file.DetailRecords.Add(new AU.ABA.Records.DetailRecord());
+            file.DetailRecords.Add(new AU.ABA.Records.DeDetailRecord());
             var stream = new MemoryStream();
             var writer = new StreamWriter(stream) { AutoFlush = true };
 
@@ -53,7 +54,7 @@ namespace Banking.AU.tests.ABA
 				EntryDescriptor = "PAYROLL",
 				ProcessDate = new DateTime(2015, 7, 30)
             };
-            file.DetailRecords.Add(new DetailRecord()
+            file.DetailRecords.Add(new DeDetailRecord()
             {
 				Bsb = "000-000",
 				AccountNumber = "00-1234",
@@ -144,6 +145,57 @@ namespace Banking.AU.tests.ABA
             Assert.AreEqual(1, file.DetailRecords.Count);
             Assert.IsNotNull(file.FileTotalRecord);
             File.Delete(path);
+        }
+
+        [Test]
+        public void Read_returns_stream()
+        {
+            // Arrange
+            var data = new StringBuilder();
+            data.AppendLine("0                 01NAB       NAB                       012345DE Returns  070905                                        ");
+            data.AppendLine("2082-0014587999935130000018622THOMPSON  SARAH                 694609            062-184010479999SUNNY-PEOPLE    06337999");
+            data.AppendLine("2082-0014587999936130000042350OWEN  MELISSA                   693549            633-000118309999SUNNY-PEOPLE    06337999");
+            data.AppendLine("7999-999            000029678200000000000000296782                        000010                                        ");
+            var io = new AbaFileIO();
+            var stream = new MemoryStream();
+            var writer = new StreamWriter(stream) { AutoFlush = true };
+            writer.Write(data.ToString());
+            stream.Position = 0;
+            var reader = new StreamReader(stream);
+
+            // Act
+            var file = io.Read(reader);
+
+            // Assert
+            Assert.IsNotNull(file);
+            Assert.IsNotNull(file.DescriptiveRecord);
+            Assert.IsNotNull(file.DetailRecords);
+            Assert.AreEqual(2, file.DetailRecords.Count);
+            Assert.IsTrue(file.DetailRecords.All(r => r is ReturnsDetailRecord));
+            Assert.AreEqual(ReturnCode.NoAccountOrIncorrectAccountNumber, ((ReturnsDetailRecord)file.DetailRecords[0]).ReturnCode);
+            Assert.AreEqual(ReturnCode.ReferToCustomer, ((ReturnsDetailRecord)file.DetailRecords[1]).ReturnCode);
+            Assert.IsNotNull(file.FileTotalRecord);
+        }
+
+        [Test]
+        public void Read_throws_on_incorrect_record_width()
+        {
+            // Arrange
+            var data = new StringBuilder();
+            data.AppendLine("0                 01NAB       NAB                       012345DE Returns  070905                                        ");
+            data.AppendLine("2082-0014587999936130000042350OWEN  MELISSA                   693549            633-000118309999SUNNY-PEOPLE    06337999                 "); // Incorrect file width.
+            data.AppendLine("7999-999            000029678200000000000000296782                        000010                                        ");
+            var io = new AbaFileIO();
+            var stream = new MemoryStream();
+            var writer = new StreamWriter(stream) { AutoFlush = true };
+            writer.Write(data.ToString());
+            stream.Position = 0;
+            var reader = new StreamReader(stream);
+
+            // Act - done by assertion, below.
+
+            // Assert
+            Assert.That(() => io.Read(reader), Throws.Exception);
         }
     }
 }

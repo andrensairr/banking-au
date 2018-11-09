@@ -42,6 +42,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ABA\AbaFile.cs" />
+    <Compile Include="ABA\Records\DeDetailRecord.cs" />
+    <Compile Include="ABA\Records\ReturnCode.cs" />
+    <Compile Include="ABA\Records\ReturnsDetailRecord.cs" />
     <Compile Include="Common\Converters\StringReplaceConverter.cs" />
     <Compile Include="Common\Converters\StringFormatConverter.cs" />
     <Compile Include="Common\Converters\CurrencyConverter.cs" />

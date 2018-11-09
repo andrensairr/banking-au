@@ -14,7 +14,8 @@ namespace Banking.AU.ABA
         public AbaFileIO()
         {
             _engine = new MultiRecordEngine(typeof(DescriptiveRecord),
-                                               typeof(DetailRecord),
+                                               typeof(DeDetailRecord),
+                                               typeof(ReturnsDetailRecord),
                                                typeof(FileTotalRecord));
             _engine.RecordSelector = new RecordTypeSelector(ABAFormatSelector);
         }
@@ -67,7 +68,9 @@ namespace Banking.AU.ABA
             if (type == 0)
                 return typeof(DescriptiveRecord);
             else if (type == 1)
-                return typeof(DetailRecord);
+                return typeof(DeDetailRecord);
+            else if (type == 2)
+                return typeof(ReturnsDetailRecord);
             else if (type == 7)
                 return typeof(FileTotalRecord);
             return null;
