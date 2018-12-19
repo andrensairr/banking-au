@@ -13,6 +13,9 @@ namespace Banking.AU.Common.Converters
     public class EnumConverter : ConverterBase
     {
         private Dictionary<object, string> _lookup;
+
+        protected override bool CustomNullHandling => true;
+
         public EnumConverter(Type enumType)
         {
             _lookup = new Dictionary<object,string>();
