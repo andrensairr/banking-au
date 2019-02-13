@@ -17,15 +17,14 @@ namespace Banking.AU.ABA.Records
         public ReturnCode ReturnCode;
 
         /// <summary>
-        /// The day of the month of the originating transaction. Positions 75 – 76 of the original type 0 record.
+        /// The day of the month of the originating transaction. Positions 75 – 76 of the original type 0 (descriptive) record.
         /// </summary>
         [FieldOrder(11)]
         [FieldFixedLength(2)]
         public int OriginalDayOfProcessing;
 
         /// <summary>
-        /// Can be used to indicate that a particular record represents a change to a prior record in the batch, or to existing details held on file for the payee. It’s also clear that not every financial institution pays attention to this field. Unless you are dealing with thousands of payments at a time, you should leave this field blank to make it clear that each record represents a separate payment.
-        /// Default None.
+        /// Original User’s ID Number. Positions 57 – 62 of the original type 0 (descriptive) record.
         /// </summary>
         [FieldOrder(12)]
         [FieldFixedLength(6)]

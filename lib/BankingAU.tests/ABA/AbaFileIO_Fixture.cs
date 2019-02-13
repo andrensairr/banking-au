@@ -207,6 +207,7 @@ namespace Banking.AU.tests.ABA
             var io = new AbaFileIO();
             var data = new StringBuilder();
             data.AppendLine("0                 01WBC       John Citizen              001234PAYROLL     300715                                        ");
+            // Note the empty space in position 18.
             data.AppendLine("1000-000  00-1234 500000123456Citizen. John Michael           5550033890123456  999-999  43-2100COMMBANK        00012340");
             data.AppendLine("7999-999            000012345600001234560000000000                        000001                                        ");
 			var path = Path.GetTempFileName();
