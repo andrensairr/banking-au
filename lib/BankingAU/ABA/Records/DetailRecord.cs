@@ -46,7 +46,7 @@ namespace Banking.AU.ABA.Records
         [FieldOrder(5)]
         [FieldFixedLength(10)]
         [FieldAlign(AlignMode.Right, '0')]
-        [FieldConverter(typeof(CurrencyConverter))]
+        [FieldConverter(typeof(UnsignedCurrencyConverter))]
         public decimal Amount;
 
         /// <summary>

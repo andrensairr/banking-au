@@ -34,5 +34,30 @@ namespace Banking.AU.tests.Common
             // Assert
             Assert.AreEqual(1234.56m, result);
         }
+        [Test]
+        public void From_decimal_unsigned()
+        {
+            // Arrange
+            var c = new UnsignedCurrencyConverter();
+
+            // Act
+            var result = c.FieldToString(-1234.56m);
+
+            // Assert
+            Assert.AreEqual("123456", result);
+        }
+
+        [Test]
+        public void To_decimal_unsigned()
+        {
+            // Arrange
+            var c = new UnsignedCurrencyConverter();
+
+            // Act
+            var result = c.StringToField("0000123456");
+
+            // Assert
+            Assert.AreEqual(1234.56m, result);
+        }
     }
 }

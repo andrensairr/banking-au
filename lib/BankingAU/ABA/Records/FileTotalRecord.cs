@@ -29,7 +29,7 @@ namespace Banking.AU.ABA.Records
         /// </summary>
         [FieldFixedLength(10)]
         [FieldAlign(AlignMode.Right, '0')]
-        [FieldConverter(typeof(CurrencyConverter))]
+        [FieldConverter(typeof(UnsignedCurrencyConverter))]
         public decimal NetTotalAmount;
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace Banking.AU.ABA.Records
         /// </summary>
         [FieldFixedLength(10)]
         [FieldAlign(AlignMode.Right, '0')]
-        [FieldConverter(typeof(CurrencyConverter))]
+        [FieldConverter(typeof(UnsignedCurrencyConverter))]
         public decimal CreditTotalAmount;
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace Banking.AU.ABA.Records
         /// </summary>
         [FieldFixedLength(10)]
         [FieldAlign(AlignMode.Right, '0')]
-        [FieldConverter(typeof(CurrencyConverter))]
+        [FieldConverter(typeof(UnsignedCurrencyConverter))]
         public decimal DebitTotalAmount;
 
         [FieldFixedLength(24)]

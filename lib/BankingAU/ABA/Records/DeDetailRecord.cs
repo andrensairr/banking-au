@@ -23,7 +23,7 @@ namespace Banking.AU.ABA.Records
         [FieldOrder(11)]
         [FieldFixedLength(8)]
         [FieldAlign(AlignMode.Right, '0')]
-        [FieldConverter(typeof(CurrencyConverter))]
+        [FieldConverter(typeof(UnsignedCurrencyConverter))]
         public decimal WithholdingTaxAmount;
 
         public DeDetailRecord()
